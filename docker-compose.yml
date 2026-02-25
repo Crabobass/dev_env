@@ -9,6 +9,7 @@ services:
     restart: unless-stopped
     ports:
       - ${APP_PORT}:80
+      - "63343:80" # для swagger
     volumes:
       - ./app:/var/www/html
       - ./conf/server/000-default.conf:/etc/apache2/sites-enabled/000-default.conf:ro
