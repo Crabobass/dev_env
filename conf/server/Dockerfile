@@ -1,7 +1,9 @@
-FROM php:8.5.2-apache
+ARG PHP_VERSION=8.5.2
+FROM php:${PHP_VERSION}-apache
 
 # Установка системных зависимостей и расширений PHP
 RUN apt-get update && apt-get install -y \
+    libldap2-dev \
     git \
     unzip \
     libpng-dev \
@@ -25,7 +27,9 @@ RUN apt-get update && apt-get install -y \
     xml \
     curl \
     ldap \
-    && pecl install xdebug \
+    soap \
+    exif \
+    && if php -r 'exit((PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION === 4) ? 0 : 1);'; then pecl install xdebug-3.1.6; else pecl install xdebug; fi \
     && docker-php-ext-enable xdebug \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
